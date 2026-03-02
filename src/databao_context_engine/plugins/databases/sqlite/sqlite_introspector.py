@@ -21,6 +21,9 @@ class SQLiteIntrospector(BaseIntrospector[SQLiteConfigFile]):
         conn.text_factory = str
         return conn
 
+    def _connection_check_sql_query(self) -> str:
+        return "SELECT name FROM sqlite_master LIMIT 1"
+
     def _get_catalogs(self, connection, file_config: SQLiteConfigFile) -> list[str]:
         return [self._resolve_pseudo_catalog_name(file_config)]
 

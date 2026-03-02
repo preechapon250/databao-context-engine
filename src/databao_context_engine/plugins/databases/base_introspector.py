@@ -32,7 +32,10 @@ class BaseIntrospector(Generic[T], ABC):
 
     def check_connection(self, file_config: T) -> None:
         with self._connect(file_config) as connection:
-            self._fetchall_dicts(connection, "SELECT 1 as test", None)
+            self._fetchall_dicts(connection, self._connection_check_sql_query(), None)
+
+    def _connection_check_sql_query(self) -> str:
+        return "SELECT 1 as test"
 
     @perf.perf_span("db.introspect_database")
     def introspect_database(self, file_config: T) -> DatabaseIntrospectionResult:

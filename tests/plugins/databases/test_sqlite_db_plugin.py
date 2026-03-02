@@ -162,7 +162,7 @@ def test_sqlite_check_connection__fails_if_path_is_incorrect(tmp_path: Path):
         plugin.check_connection("sqlite", config)
 
 
-def test_sqlite_check_connection__fails_if_path_is_not_a_sqlite(tmp_path: Path):
+def test_sqlite_check_connection__fails_if_path_is_not_a_sqlite_db(tmp_path: Path):
     sqlite_file = tmp_path / "wrong_file.sqlite"
     sqlite_file.write_text("Not a SQLite file", encoding="utf-8")
 
