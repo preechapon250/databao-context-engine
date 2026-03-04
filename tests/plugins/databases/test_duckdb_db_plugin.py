@@ -43,8 +43,7 @@ def execute_duckdb_queries(db_file: Path, *queries: str):
 
 @contextlib.contextmanager
 def seed_rows(db_file: Path, full_table_name: str, rows: Sequence[Mapping[str, Any]]):
-    conn = duckdb.connect(database=str(db_file))
-    try:
+    with duckdb.connect(database=str(db_file)) as conn:
         conn.execute(f"TRUNCATE TABLE {full_table_name}")
 
         if rows:
@@ -56,10 +55,10 @@ def seed_rows(db_file: Path, full_table_name: str, rows: Sequence[Mapping[str, A
             data = [tuple(r[c] for c in columns) for r in rows]
             conn.executemany(sql, data)
 
-        yield
-    finally:
+    yield
+
+    with duckdb.connect(database=str(db_file)) as conn:
         conn.execute(f"TRUNCATE TABLE {full_table_name}")
-        conn.close()
 
 
 @pytest.fixture

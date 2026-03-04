@@ -25,7 +25,7 @@ class DuckDBIntrospector(BaseIntrospector[DuckDBConfigFile]):
             raise ConnectionError(f"No DuckDB database was found at path {duckdb_path.resolve()}")
 
         database_path = str(duckdb_path.resolve())
-        return duckdb.connect(database=database_path)
+        return duckdb.connect(database=database_path, read_only=True)
 
     def _get_catalogs(self, connection, file_config: DuckDBConfigFile) -> list[str]:
         rows = self._fetchall_dicts(connection, "SELECT database_name FROM duckdb_databases();", None)
