@@ -41,7 +41,7 @@ ConfigPropertyDefinition = ConfigSinglePropertyDefinition | ConfigUnionPropertyD
 
 @dataclass(kw_only=True)
 class ConfigPropertyAnnotation:
-    required: bool = False
+    required: bool | None = None
     ignored_for_config_wizard: bool = False
     secret: bool = False
 

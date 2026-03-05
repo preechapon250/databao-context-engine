@@ -143,7 +143,7 @@ def _create_property(
 
     actual_property_types = _read_actual_property_type(property_type)
 
-    required = annotation.required if annotation else is_property_required
+    required = annotation.required if annotation and annotation.required is not None else is_property_required
     secret = annotation.secret if annotation else False
 
     if len(actual_property_types) > 1:
