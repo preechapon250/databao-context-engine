@@ -151,7 +151,9 @@ def test_databao_context_domain_manager__index_built_contexts_indexes_all_when_n
     c1 = DatasourceContext(DatasourceId.from_string_repr("full/a.yaml"), context="A")
     c2 = DatasourceContext(DatasourceId.from_string_repr("other/b.yaml"), context="B")
 
-    given_output_dir_with_built_contexts(domain_manager._project_layout, [c1, c2])
+    given_output_dir_with_built_contexts(
+        domain_manager._project_layout, [(c1.datasource_id, c1.context), (c2.datasource_id, c2.context)]
+    )
 
     index_fn = mocker.patch(
         "databao_context_engine.databao_context_domain_manager.index_built_contexts",
@@ -175,7 +177,10 @@ def test_databao_context_domain_manager__index_built_contexts_filters_by_datasou
     c2 = DatasourceContext(DatasourceId.from_string_repr("other/b.yaml"), context="B")
     c3 = DatasourceContext(DatasourceId.from_string_repr("full/c.yaml"), context="C")
 
-    given_output_dir_with_built_contexts(domain_manager._project_layout, [c1, c2, c3])
+    given_output_dir_with_built_contexts(
+        domain_manager._project_layout,
+        [(c1.datasource_id, c1.context), (c2.datasource_id, c2.context), (c3.datasource_id, c3.context)],
+    )
 
     index_fn = mocker.patch(
         "databao_context_engine.databao_context_domain_manager.index_built_contexts",
@@ -243,10 +248,10 @@ def test_databao_context_domain_manager__enrich_built_contexts_with_dummy_plugin
     datasource_id = DatasourceId.from_string_repr("dummy/my_enrichable_data.yaml")
     given_output_dir_with_built_contexts(
         domain_manager._project_layout,
-        datasource_contexts=[
-            DatasourceContext(
-                datasource_id=datasource_id,
-                context=to_yaml_string(
+        contexts=[
+            (
+                datasource_id,
+                to_yaml_string(
                     BuiltDatasourceContext(
                         datasource_id=str(datasource_id),
                         datasource_type="dummy_enrichable",
