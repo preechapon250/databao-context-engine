@@ -311,7 +311,7 @@ class PostgresqlIntrospector(BaseIntrospector[PostgresConfigFile]):
 
     @override
     def get_view_columns_sql_query(self, catalog: str, schemas: list[str]) -> SQLQuery:
-        return self._columns_sql_query(schemas, "c.relkind NOT IN ('r','p')")
+        return self._columns_sql_query(schemas, "c.relkind IN ('v','m','f')")
 
     def _columns_sql_query(self, schemas: list[str], relation_kind_filter: str) -> SQLQuery:
         return SQLQuery(
