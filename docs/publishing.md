@@ -50,6 +50,17 @@ See `uv version --help` for more details
 
 GitHub Actions will automatically build and publish the package to PyPI.
 
+## Versioning Guidelines
+
+This project follows [Semantic Versioning](https://semver.org/) (X.Y.Z):
+
+- **X (Major)**: Incompatible API changes
+- **Y (Minor)**: Backward-compatible new features or **breaking changes** during 0.x development
+- **Z (Patch)**: Backward-compatible bug fixes
+
+**Important**: If a breaking change is introduced, at least the minor version (Y) must be incremented. This applies even
+for small breaking changes like renaming a public function or changing a method signature.
+
 ## Important Notes
 
 - The Git tag version **must** match the version in `pyproject.toml`, otherwise the workflow will fail
