@@ -8,7 +8,6 @@ from mcp.server import FastMCP
 from mcp.types import ToolAnnotations
 
 from databao_context_engine import DatabaoContextEngine, DatasourceId
-from databao_context_engine.datasources.datasource_discovery import get_datasource_list
 
 logger = logging.getLogger(__name__)
 
@@ -61,13 +60,13 @@ class McpServer:
             annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=False),
         )
         def list_datasources_tool():
-            datasources = get_datasource_list(self._databao_context_engine._project_layout)
+            datasources = self._databao_context_engine.get_introspected_datasource_list()
             return {
                 "datasources": [
                     {
-                        "id": str(ds.datasource.id),
-                        "name": ds.datasource.id.datasource_name,
-                        "type": ds.datasource.type.full_type,
+                        "id": str(ds.id),
+                        "name": ds.id.name,
+                        "type": ds.type.full_type,
                     }
                     for ds in datasources
                 ]
@@ -84,16 +83,16 @@ class McpServer:
         ):
             # If no datasource_id provided, try to use the only one available
             if datasource_id is None:
-                datasources = get_datasource_list(self._databao_context_engine._project_layout)
+                datasources = self._databao_context_engine.get_introspected_datasource_list()
                 if len(datasources) == 0:
                     raise ValueError("No datasources configured in the project")
                 if len(datasources) > 1:
-                    available_ids = [str(ds.datasource.id) for ds in datasources]
+                    available_ids = [str(ds.id) for ds in datasources]
                     raise ValueError(
                         f"Multiple datasources configured. Please specify datasource_id. "
                         f"Available datasources: {', '.join(available_ids)}"
                     )
-                ds = datasources[0].datasource.id
+                ds = datasources[0].id
             else:
                 ds = DatasourceId.from_string_repr(datasource_id)
 
