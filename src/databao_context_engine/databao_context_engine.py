@@ -17,8 +17,8 @@ from databao_context_engine.datasources.types import Datasource, DatasourceId
 from databao_context_engine.pluginlib.build_plugin import DatasourceType
 from databao_context_engine.pluginlib.sql.sql_types import SqlExecutionResult
 from databao_context_engine.plugins.databases.database_context_explorer import (
+    DatabaseSchemaLite,
     DatabaseTableDetails,
-    SchemaLite,
     get_database_table_details,
     list_database_schemas_and_tables,
 )
@@ -190,7 +190,7 @@ class DatabaoContextEngine:
             if introspected_datasource.type in database_types
         ]
 
-    def list_database_schemas_and_tables(self, datasource_id: DatasourceId) -> list[SchemaLite]:
+    def list_database_schemas_and_tables(self, datasource_id: DatasourceId) -> list[DatabaseSchemaLite]:
         built_context = load_database_built_context(
             project_layout=self._project_layout,
             plugin_loader=self._plugin_loader,

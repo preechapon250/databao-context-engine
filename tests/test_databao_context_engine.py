@@ -3,15 +3,18 @@ from datetime import datetime
 import pytest
 import time_machine
 
-from databao_context_engine import DatabaoContextEngine, Datasource, DatasourceContext, DatasourceId
+from databao_context_engine import (
+    DatabaoContextEngine,
+    DatabaseSchemaLite,
+    DatabaseTableDetails,
+    DatabaseTableLite,
+    Datasource,
+    DatasourceContext,
+    DatasourceId,
+    DatasourceType,
+)
 from databao_context_engine.build_sources.plugin_execution import BuiltDatasourceContext
 from databao_context_engine.datasources.datasource_context import DatasourceContextHash
-from databao_context_engine.pluginlib.build_plugin import DatasourceType
-from databao_context_engine.plugins.databases.database_context_explorer import (
-    DatabaseTableDetails,
-    SchemaLite,
-    TableLite,
-)
 from databao_context_engine.plugins.databases.databases_types import (
     DatabaseCatalog,
     DatabaseColumn,
@@ -340,12 +343,12 @@ def test_databao_engine__list_database_schema_tree_and_table_details(project_pat
     datasource_id = DatasourceId.from_string_repr("databases/warehouse.yaml")
 
     assert databao_context_engine.list_database_schemas_and_tables(datasource_id) == [
-        SchemaLite(
+        DatabaseSchemaLite(
             datasource_id=str(datasource_id),
             catalog_name="analytics",
             schema_name="public",
             description=None,
-            tables=[TableLite(table_name="orders", description="Customer orders")],
+            tables=[DatabaseTableLite(table_name="orders", description="Customer orders")],
         )
     ]
 

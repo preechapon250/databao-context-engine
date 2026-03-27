@@ -5,18 +5,18 @@ from databao_context_engine.plugins.databases.databases_types import DatabaseInt
 
 
 @dataclass(kw_only=True, frozen=True)
-class TableLite:
+class DatabaseTableLite:
     table_name: str
     description: str | None
 
 
 @dataclass(kw_only=True, frozen=True)
-class SchemaLite:
+class DatabaseSchemaLite:
     datasource_id: str
     catalog_name: str
     schema_name: str
     description: str | None
-    tables: list[TableLite] | None
+    tables: list[DatabaseTableLite] | None
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -27,20 +27,20 @@ class DatabaseTableDetails:
     table: DatabaseTable
 
 
-def list_database_schemas_and_tables(context: BuiltDatasourceContext) -> list[SchemaLite]:
+def list_database_schemas_and_tables(context: BuiltDatasourceContext) -> list[DatabaseSchemaLite]:
     if not isinstance(context.context, DatabaseIntrospectionResult):
         raise ValueError(
             f"Impossible to list database's schemas for a context that is not a `DatabaseIntrospectionResult` (received: {type(context.context)})"
         )
 
     return [
-        SchemaLite(
+        DatabaseSchemaLite(
             datasource_id=context.datasource_id,
             catalog_name=catalog.name,
             schema_name=schema.name,
             description=schema.description,
             tables=[
-                TableLite(
+                DatabaseTableLite(
                     table_name=table.name,
                     description=table.description,
                 )
